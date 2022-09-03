@@ -1,2 +1,2 @@
-Origin repository - https://github.com/WongKinYiu/yolov7
+Origin repository - https://github.com/deshwalmahesh/yolov7-deepsort-tracking
 
