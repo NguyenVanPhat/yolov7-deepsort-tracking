@@ -1,0 +1,53 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="27">
+            <item index="0" class="java.lang.String" itemvalue="decorator" />
+            <item index="1" class="java.lang.String" itemvalue="pydot" />
+            <item index="2" class="java.lang.String" itemvalue="Babel" />
+            <item index="3" class="java.lang.String" itemvalue="qrcode" />
+            <item index="4" class="java.lang.String" itemvalue="html2text" />
+            <item index="5" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="6" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="7" class="java.lang.String" itemvalue="feedparser" />
+            <item index="8" class="java.lang.String" itemvalue="XlsxWriter" />
+            <item index="9" class="java.lang.String" itemvalue="num2words" />
+            <item index="10" class="java.lang.String" itemvalue="docutils" />
+            <item index="11" class="java.lang.String" itemvalue="ebaysdk" />
+            <item index="12" class="java.lang.String" itemvalue="libsass" />
+            <item index="13" class="java.lang.String" itemvalue="passlib" />
+            <item index="14" class="java.lang.String" itemvalue="xlrd" />
+            <item index="15" class="java.lang.String" itemvalue="ofxparse" />
+            <item index="16" class="java.lang.String" itemvalue="reportlab" />
+            <item index="17" class="java.lang.String" itemvalue="xlwt" />
+            <item index="18" class="java.lang.String" itemvalue="pyserial" />
+            <item index="19" class="java.lang.String" itemvalue="vobject" />
+            <item index="20" class="java.lang.String" itemvalue="zeep" />
+            <item index="21" class="java.lang.String" itemvalue="psutil" />
+            <item index="22" class="java.lang.String" itemvalue="polib" />
+            <item index="23" class="java.lang.String" itemvalue="pyusb" />
+            <item index="24" class="java.lang.String" itemvalue="mock" />
+            <item index="25" class="java.lang.String" itemvalue="vatnumber" />
+            <item index="26" class="java.lang.String" itemvalue="Mako" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+          <option value="N802" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="SpellCheckingInspection" enabled="false" level="TYPO" enabled_by_default="false">
+      <option name="processCode" value="true" />
+      <option name="processLiterals" value="true" />
+      <option name="processComments" value="true" />
+    </inspection_tool>
+  </profile>
+</component>
