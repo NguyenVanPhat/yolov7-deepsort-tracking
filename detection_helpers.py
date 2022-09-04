@@ -90,6 +90,8 @@ class Detector:
         plot_bb: whether to plot the bounding box around image or return the prediction
         '''
         img, im0 = self.load_image(source)
+        pprint("img", img)
+        pprint("im0", im0)
         img = torch.from_numpy(img).to(self.device)
         img = img.half() if self.half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -132,6 +134,8 @@ class Detector:
         Load and pre process the image
         args: img0: Path of image or numpy image in 'BGR" format
         '''
+        # "isinstance" kiểm tra xem "img0" có phải là đường dẫn image/video hay ko để sử dụng "cv2.imread()"..
+        # để đọc, nhưng trong bài này ảnh được được đọc và truyền hẳn vào luôn.
         if isinstance(img0, str): img0 = cv2.imread(img0)  # BGR
         assert img0 is not None, 'Image Not Found '
 
