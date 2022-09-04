@@ -9,6 +9,26 @@ from utils.general import check_img_size, non_max_suppression, apply_classifier,
 from utils.plots import plot_one_box
 from utils.torch_utils import select_device, load_classifier,TracedModel
 
+def pprint(name_variable, variable):
+    print("\n------------------------------------------ "+"BIẾN "+name_variable+" ------------------------------------------")
+    try:
+        print("TYPE: " + "---" + str(type(variable)) + "---")
+    except:
+        print("ko hien thi duoc TYPE()")
+    try:
+        print("LEN: " + "---" + str(len(variable)) + "---")
+    except:
+        print("ko hien thi duoc LEN()")
+    try:
+        print("SHAPE: " + "---" + str(variable.shape) + "---")
+    except:
+        print("ko hien thi duoc SHAPE()")
+    try:
+        print("VALUE: ", variable)
+    except:
+        print("ko hien thi duoc VALUE")
+    finally:
+        print("------------------------------------------ KẾT THÚC BIẾN {0} ------------------------------------------".format(name_variable))
 
 class Detector:
     def __init__(self, conf_thres:float = 0.25, iou_thresh:float = 0.45, agnostic_nms:bool = False, save_conf:bool = False, classes:list = None):
