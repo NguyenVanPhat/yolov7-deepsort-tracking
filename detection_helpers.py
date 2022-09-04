@@ -132,8 +132,9 @@ class Detector:
         pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, classes=self.classes, agnostic=self.agnostic_nms)
 
         # Apply Classifier
+        print("\nhaha_first")
         if self.classify:
-            print("haha")
+            print("\nhaha_end")
             pred = apply_classifier(pred, self.modelc, img, im0) # I thnk we need to add a new axis to im0
 
 
