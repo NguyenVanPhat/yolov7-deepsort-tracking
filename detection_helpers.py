@@ -47,6 +47,28 @@ class Detector:
         self.agnostic_nms = agnostic_nms
         self.save_conf = save_conf
 
+    def pprint(self, name_variable, variable):
+        print(
+            "\n------------------------------------------ " + "BIẾN " + name_variable + " ------------------------------------------")
+        try:
+            print("TYPE: " + "---" + str(type(variable)) + "---")
+        except:
+            print("ko hien thi duoc TYPE()")
+        try:
+            print("LEN: " + "---" + str(len(variable)) + "---")
+        except:
+            print("ko hien thi duoc LEN()")
+        try:
+            print("SHAPE: " + "---" + str(variable.shape) + "---")
+        except:
+            print("ko hien thi duoc SHAPE()")
+        try:
+            print("VALUE: ", variable)
+        except:
+            print("ko hien thi duoc VALUE")
+        finally:
+            print(
+                "------------------------------------------ KẾT THÚC BIẾN {0} ------------------------------------------".format(name_variable))
 
     def load_model(self, weights:str, img_size:int = 640, trace:bool = True, classify:bool = False):
         '''
@@ -134,8 +156,8 @@ class Detector:
         # Apply Classifier
         print("\nhaha_first")
         print(self.classify)
-        pprint("self.classify", self.classify)
-        if self.classify:            
+        self.pprint("self.classify", self.classify)
+        if self.classify:
             pred = apply_classifier(pred, self.modelc, img, im0) # I thnk we need to add a new axis to im0
 
 
