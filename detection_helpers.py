@@ -109,11 +109,28 @@ class Detector:
         # --> chú ý: các thông số này áp dụng với thiết đặt chỉ detect 1 classes là ["person"].
         # trong ví dụ video đầu vào có 6 người được phát hiện
         pred = self.model(img, augment=False)[0] # We don not need any augment during inference time
-        pprint("pred = self.model()[0]", pred)
+
 
         # Apply NMS
+        # Apply NMS viết tắt của Non-Maximum Suppression: là 1 method trong thị giác máy tính giúp chọn...
+        # một thực thể duy nhất trong nhiều thực thể chồng chéo lên nhau (thực thể trong bài này là...
+        # bounding boxes). Phương pháp là loại bỏ các thực thể nằm dưới một giới hạn xác xuất(%) đã cho sẵn..
+        # nếu giới hạn xác xuất càng cao thì càng khắt khe trong việc chọn thực thể hay nói cách khác..
+        # số lượng thực thể được chọn sẽ ít đi, chỉ những thực thể có xác xuất cao đáng tin cậy mới được chọn.
+        # ----------------------------------------------------------------------------------------
+        # "opt.conf_thres" mặc định là 0.25(float)
+        # "opt.iou_thres" mặc định là 0.45(float)
+        # "opt.classes" mặc định là None(nghĩa là detect tất các classes có thể)
+        # ----------------------------------------------------------------------------------------
+        # với mỗi "pred"([1, 15120, 85]) bên trên non_max_suppression() sẽ trả ra một list of detections..
+        # list này chứa duy nhất 1 Tensor có SHAPE=[n, 6] với n ở đây là số đối tượng phát hiện được..
+        # trong image/frame. số 6 là số lượng thông số kỹ thuật cho mỗi object được phát hiện cụ thể..
+        # mỗi object là 1 row trong Tensor có dạng ("bb" viết tắt của bounding boxes):..
+        # [toạ_độ_X_top_left_bb, toạ_độ_Y_top_left_bb, toạ_độ_X_bottom_right_bb, toạ_độ_Y_bottom_right_bb, confident, classes]
+        # --> lưu ý: những thông số kỹ thuật trên (toạ độ tâm, chiều cao...) đều chưa được mã hoá thành định dạng..
+        # theo chuẩn của Yolo, vẫn đang trình bày dưới dạng giá trị pixel và giá trị float
         pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, classes=self.classes, agnostic=self.agnostic_nms)
-        pprint("pred = non_max_suppression()", pred)
+
 
         # Apply Classifier
         if self.classify:
