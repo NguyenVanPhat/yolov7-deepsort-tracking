@@ -118,7 +118,7 @@ class YOLOv7_DeepSORT:
 
         # "frame_num" dùng để đếm số frame hiện tại trong video
         frame_num = 0
-        # Vòng lặp chạy qua từng Frame video và xử lý từng frame đó - khối xử lý chính của Chương trình
+        # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
         while True:  # while video is running
             return_value, frame = vid.read()
             # "return_value = False" nghĩa là đã chạy hết Video sẽ dừng loop While
