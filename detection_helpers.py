@@ -85,6 +85,7 @@ class Detector:
 
     @torch.no_grad()
     def detect(self, source, plot_bb:bool =True):
+        print("run_detect")
         '''
         source: Path to image file, video file, link or text etc
         plot_bb: whether to plot the bounding box around image or return the prediction
