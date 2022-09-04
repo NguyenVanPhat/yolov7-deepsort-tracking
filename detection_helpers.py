@@ -131,7 +131,7 @@ class Detector:
         # theo chuẩn của Yolo, vẫn đang trình bày dưới dạng giá trị pixel và giá trị float
         pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, classes=self.classes, agnostic=self.agnostic_nms)
 
-        pprint("classify", classify)
+        pprint("classify", self.classify)
         # Apply Classifier
         if self.classify:
             pred = apply_classifier(pred, self.modelc, img, im0) # I thnk we need to add a new axis to im0
