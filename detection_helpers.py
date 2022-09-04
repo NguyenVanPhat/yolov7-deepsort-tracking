@@ -89,9 +89,9 @@ class Detector:
         source: Path to image file, video file, link or text etc
         plot_bb: whether to plot the bounding box around image or return the prediction
         '''
+        # "img" có type = <class 'numpy.ndarray'>; shape = (3, 384, 640);
+        # "im0" có type = <class 'numpy.ndarray'>; shape = (1080, 1920, 3);
         img, im0 = self.load_image(source)
-        pprint("img", img)
-        pprint("im0", im0)
         img = torch.from_numpy(img).to(self.device)
         img = img.half() if self.half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -99,10 +99,21 @@ class Detector:
             img = img.unsqueeze(0)
 
         # Inference
+        # "pred" có TYPE=<class 'torch.Tensor'>, SHAPE=[1, 15120, 85]
+        # Với mỗi img(3, 384, 640) truyền vào model(img, augment=opt.augment) sẽ trả ra 1 tuple có LEN=2:
+        # - Phần tử đầu tiên là được gán vào biến "pred" và có là 1 Tensor có SHAPE=[1, 15120, 85]
+        # - Phần tử thứ 2 là 1 list có LEN=3 chứa 3 Tensor khác nhau:
+        #   + Tensor 1 có SHAPE=[1, 3, 48, 80, 85]
+        #   + Tensor 2 có SHAPE=[1, 3, 24, 40, 85]
+        #   + Tensor 3 có SHAPE=[1, 3, 12, 20, 85]
+        # --> chú ý: các thông số này áp dụng với thiết đặt chỉ detect 1 classes là ["person"].
+        # trong ví dụ video đầu vào có 6 người được phát hiện
         pred = self.model(img, augment=False)[0] # We don not need any augment during inference time
+        pprint("pred = self.model()[0]", pred)
 
         # Apply NMS
         pred = non_max_suppression(pred, self.conf_thres, self.iou_thres, classes=self.classes, agnostic=self.agnostic_nms)
+        pprint("pred = non_max_suppression()", pred)
 
         # Apply Classifier
         if self.classify:
