@@ -134,8 +134,8 @@ class Detector:
         # Apply Classifier
         print("\nhaha_first")
         print(self.classify)
-        if self.classify:
-            print("\nhaha_end")
+        pprint("self.classify", self.classify)
+        if self.classify:            
             pred = apply_classifier(pred, self.modelc, img, im0) # I thnk we need to add a new axis to im0
 
 
