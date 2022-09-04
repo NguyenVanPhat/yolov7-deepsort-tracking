@@ -134,6 +134,8 @@ class YOLOv7_DeepSORT:
             if verbose >= 1: start_time = time.time()
 
             # -----------------------------------------PUT ANY DETECTION MODEL HERE -----------------------------------------------------------------
+            pprint("frame", frame)
+            pprint("frame.copy()", frame.copy())
             yolo_dets = self.detector.detect(frame.copy(), plot_bb=False)  # Get the detections
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
