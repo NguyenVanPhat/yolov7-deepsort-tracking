@@ -153,7 +153,6 @@ def create_box_encoder(model_filename, input_name="images",
     def encoder(image, boxes):
         image_patches = []
         for box in boxes:
-            pprint("patch", patch)
             patch = extract_image_patch(image, box, image_shape[:2])
             if patch is None:
                 print("WARNING: Failed to extract image patch: %s." % str(box))
