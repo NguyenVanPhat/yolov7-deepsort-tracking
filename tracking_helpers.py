@@ -12,7 +12,26 @@ physical_devices = tf.config.experimental.list_physical_devices('GPU')
 if len(physical_devices) > 0:
     tf.config.experimental.set_memory_growth(physical_devices[0], True)
 
-
+def pprint(name_variable, variable):
+    print("\n------------------------------------------ "+"BIẾN "+name_variable+" ------------------------------------------")
+    try:
+        print("TYPE: " + "---" + str(type(variable)) + "---")
+    except:
+        print("ko hien thi duoc TYPE()")
+    try:
+        print("LEN: " + "---" + str(len(variable)) + "---")
+    except:
+        print("ko hien thi duoc LEN()")
+    try:
+        print("SHAPE: " + "---" + str(variable.shape) + "---")
+    except:
+        print("ko hien thi duoc SHAPE()")
+    try:
+        print("VALUE: ", variable)
+    except:
+        print("ko hien thi duoc VALUE")
+    finally:
+        print("------------------------------------------ KẾT THÚC BIẾN {0} ------------------------------------------".format(name_variable))
 
 class Dummy:
     def __init__(self, video:str, output:str="./io_data/output/output.avi", coco_names_path:str ="./io_data/input/classes/coco.names", output_format:str='XVID', 
@@ -134,6 +153,7 @@ def create_box_encoder(model_filename, input_name="images",
     def encoder(image, boxes):
         image_patches = []
         for box in boxes:
+            pprint("patch", patch)
             patch = extract_image_patch(image, box, image_shape[:2])
             if patch is None:
                 print("WARNING: Failed to extract image patch: %s." % str(box))

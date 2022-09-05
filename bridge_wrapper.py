@@ -78,6 +78,7 @@ class YOLOv7_DeepSORT:
         self.detector = detector
         self.coco_names_path = coco_names_path
         self.nms_max_overlap = nms_max_overlap
+        # "read_class_names()" sẽ trả ra 1 dict có len = 80; value = {0: 'person', 1: 'bicycle', 2: 'car'...}
         self.class_names = read_class_names()
 
         # initialize deep sort
@@ -120,6 +121,7 @@ class YOLOv7_DeepSORT:
         frame_num = 0
         # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
         while True:  # while video is running
+            # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
             return_value, frame = vid.read()
             # "return_value = False" nghĩa là đã chạy hết Video sẽ dừng loop While
             if not return_value:
@@ -135,9 +137,17 @@ class YOLOv7_DeepSORT:
 
             # -----------------------------------------PUT ANY DETECTION MODEL HERE -----------------------------------------------------------------
             # "frame.copy()" cho ra kết quả y hệt "frame"
+            # "yolo_dets" có type = numpy.ndarray; shape = (n, 6); là n là số lượng object phát hiện được trong..
+            # 1 frame truyền vào và "6" là 6 giá trị thuộc tính của mỗi đối tượng
+            # mỗi object là 1 row trong yolo_dets có dạng ("bb" viết tắt của bounding boxes):..
+            # [toạ_độ_X_top_left_bb, toạ_độ_Y_top_left_bb, toạ_độ_X_bottom_right_bb, toạ_độ_Y_bottom_right_bb, confident, classes]
+            # --> lưu ý: những thông số kỹ thuật trên (toạ độ tâm, chiều cao...) đều chưa được mã hoá thành định dạng..
+            # theo chuẩn của Yolo, vẫn đang trình bày dưới dạng giá trị pixel và giá trị float
             yolo_dets = self.detector.detect(frame.copy(), plot_bb=False)  # Get the detections
             frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
 
+            # Nếu ko detect được object trong frame thì "yolo_dets" sẽ có "value = None"
+            # "scores" là confidence trong Yolo (% dự đoán chính xác đối tượng)
             if yolo_dets is None:
                 bboxes = []
                 scores = []
@@ -145,19 +155,25 @@ class YOLOv7_DeepSORT:
                 num_objects = 0
 
             else:
+                # "bboxes" đóng vai trò là tạo độ của bounding boxes
                 bboxes = yolo_dets[:, :4]
                 bboxes[:, 2] = bboxes[:, 2] - bboxes[:, 0]  # convert from xyxy to xywh
                 bboxes[:, 3] = bboxes[:, 3] - bboxes[:, 1]
 
                 scores = yolo_dets[:, 4]
+                # "classes" có type = numpy.ndarray; shape = (n,); nếu object là người thì sẽ có value = 0
                 classes = yolo_dets[:, -1]
+                # "num_objects" có type = int; value = n
                 num_objects = bboxes.shape[0]
             # ---------------------------------------- DETECTION PART COMPLETED ---------------------------------------------------------------------
-
             names = []
             for i in range(num_objects):  # loop through objects and use class index to get class name
                 class_indx = int(classes[i])
+                # "class_name" có type = str; value = "person"; đóng vai trò dịch các số index thành tên classes ví dụ: "person", "car"..
+                # để bỏ các classes đó vào list "names"
                 class_name = self.class_names[class_indx]
+                # giả sử "classes" có value = [0, 0, 38]
+                # thì "names" sau khi kết thức loop sẽ có value = ["person", "person", "tennis racket"]
                 names.append(class_name)
 
             names = np.array(names)
@@ -167,7 +183,10 @@ class YOLOv7_DeepSORT:
                 cv2.putText(frame, "Objects being tracked: {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL,
                             1.5, (0, 0, 0), 2)
 
-            # ---------------------------------- DeepSORT tacker work starts here ------------------------------------------------------------
+            # ---------------------------------- DeepSORT tracker work starts here ------------------------------------------------------------
+            # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
+            # "bboxes" có type = numpy.ndarray; shape = (6, 4);
+            # "features" có type = numpy.ndarray; shape = (6, 128);
             features = self.encoder(frame,
                                     bboxes)  # encode detections and feed to tracker. [No of BB / detections per frame, embed_size]
             detections = [Detection(bbox, score, class_name, feature) for bbox, score, class_name, feature in

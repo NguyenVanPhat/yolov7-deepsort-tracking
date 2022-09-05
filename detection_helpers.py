@@ -80,7 +80,7 @@ class Detector:
          # Get names and colors of Colors for BB creation
         self.names = self.model.module.names if hasattr(self.model, 'module') else self.model.names
         self.colors = [[random.randint(0, 255) for _ in range(3)] for _ in self.names]
-        
+
 
 
     @torch.no_grad()
@@ -92,7 +92,6 @@ class Detector:
         # "img" có type = <class 'numpy.ndarray'>; shape = (3, 384, 640);
         # "im0" có type = <class 'numpy.ndarray'>; shape = (1080, 1920, 3);
         img, im0 = self.load_image(source)
-        pprint("img", img)
         img = torch.from_numpy(img).to(self.device)
         img = img.half() if self.half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
@@ -140,24 +139,31 @@ class Detector:
 
         # Post - Process detections
         det = pred[0]# detections per image but as we have  just 1 image, it is the 0th index
+        # nếu Detect được bất kỳ object nào thì sẽ chạy "if len(det):" nếu ko sẽ return "None" bằng lệnh dưới
         if len(det):
             # Rescale boxes from img_size to im0 size
+            # "img.shape" có type: <class 'torch.Size'>; value: [1, 3, 384, 640]
+            # "im0.shape" có type: <class 'tuple'>; value: (1080, 1920, 3)
+            # "scale_coords()" sẽ chuyển giá trị phần tử trong "det" đang phù hợp với "img.shape"..
+            # thành giá trị mới phù hợp cho "im0.shape"..
+            # -> Ví dụ: img.shape[2:]=[384, 640] có det=[523.44592, 69.83182, 561.39929, 143.79759, 0.90688, 0.00000]..
+            # với im0.shape=(1080, 1920, 3) có det=[1570.0, 173.0, 1684.0, 395.0, 0.906877, 0.0]
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
             # Write results
             for *xyxy, conf, cls in reversed(det):
-
+                # "plot_bb" mặc định là False, nếu để thành True sẽ khiến chương trình chạy lỗi.
                 if plot_bb:  # Add bbox to image   # save_img
                     label = f'{self.names[int(cls)]} {conf:.2f}'
                     plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)], line_thickness=1)
                     
-        
+            # "det.detach().cpu().numpy()" có type = numpy.ndarray; shape = (6, 6)
             return im0 if plot_bb else det.detach().cpu().numpy()
 
         return im0 if plot_bb else None # just in case there's no detection, return the original image. For tracking purpose plot_bb has to be False always
         
 
-    
+
     def load_image(self, img0):
         '''
         Load and pre process the image
