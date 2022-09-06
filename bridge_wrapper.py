@@ -120,6 +120,7 @@ class YOLOv7_DeepSORT:
         # "frame_num" dùng để đếm số frame hiện tại trong video
         frame_num = 0
         # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
+        center_bbox_last = []
         while True:  # while video is running
             # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
             return_value, frame = vid.read()
@@ -263,6 +264,7 @@ class YOLOv7_DeepSORT:
                 center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
                 """End Code of Phat"""
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
+                print("\n len(center_bbox_last): ", len(center_bbox_last))
                 if len(center_bbox_last):
                     cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
