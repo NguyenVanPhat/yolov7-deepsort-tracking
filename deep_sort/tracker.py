@@ -75,6 +75,9 @@ class Tracker:
 
         This function should be called once every time step, before `update`.
         """
+        # "self.tracks" có type = list; len = n; value = [<deep_sort.track.Track>, <deep_sort.track.Track>...]..
+        # mỗi phần tử trong "self.tracks" đại diện cho 1 object trong frame này. Nếu frame ko phát hiện thấy object nào..
+        # thì "self.tracks" là list rỗng
         for track in self.tracks:
             track.predict(self.kf)
 

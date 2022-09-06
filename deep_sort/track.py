@@ -1,5 +1,28 @@
 # vim: expandtab:ts=4:sw=4
 
+def pprint(name_variable, variable):
+    print(
+        "\n------------------------------------------ " + "BIẾN " + name_variable + " ------------------------------------------")
+    try:
+        print("TYPE: " + "---" + str(type(variable)) + "---")
+    except:
+        print("ko hien thi duoc TYPE()")
+    try:
+        print("LEN: " + "---" + str(len(variable)) + "---")
+    except:
+        print("ko hien thi duoc LEN()")
+    try:
+        print("SHAPE: " + "---" + str(variable.shape) + "---")
+    except:
+        print("ko hien thi duoc SHAPE()")
+    try:
+        print("VALUE: ", variable)
+    except:
+        print("ko hien thi duoc VALUE")
+    finally:
+        print(
+            "------------------------------------------ KẾT THÚC BIẾN {0} ------------------------------------------".format(
+                name_variable))
 
 class TrackState:
     """
