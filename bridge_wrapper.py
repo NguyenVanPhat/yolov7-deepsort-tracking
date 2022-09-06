@@ -127,7 +127,9 @@ class YOLOv7_DeepSORT:
             if not return_value:
                 print('Video has ended or failed!')
                 break
-            frame_num += 1
+
+            frame_num += 1 # Lưu ý: "frame_num" ko đại diện cho Frame bao nhiêu trong video input, nếu "frame_num" là số chẳn..
+            # thì mới xử lý frame thực sự trong video.
             # haha
             print("\n FRAME = ", frame_num)
             # nếu "skip_frames" có giá trị, thì khi Frame chạy đến vị trí "skip_frames" quy định sẽ chạy..
@@ -221,9 +223,30 @@ class YOLOv7_DeepSORT:
             # Update bouding boxes của các object cho Kalman
             self.tracker.update(detections)  # updtate using Kalman Gain
 
+            # "self.tracker.tracks" là một attribute của mỗi Class Tracker (đại diện cho mỗi object) có dạng list..
+            # ban đầu "self.tracker.tracks" là list rỗng nhưng nhờ 2 lệnh:
+            # - "self.tracker.predict()"
+            # - "self.tracker.update(detections)"
+            # đã giúp đưa những object được detect bởi Yolo đi qua qua và được duyệt bởi bộ lọc Kalman vào danh sách theo dõi (tracks).
+            # --> Do đó, hiện tại "self.tracker.tracks" là list; len = n; mỗi phần tử trong list là 1 Class "Track" đại diện cho 1 object.
+            """
+            # Lưu ý: 2 frame đầu tiên sẽ được làm dữ liệu cho bộ lọc Kalman. Đến frame thứ 3 trở đi, Kalman mới có thể đưa ra dự đoán
+            # Vì thế "self.tracker.tracks" trong 2 frame đầu tiên là rỗng
+            """
+            # mỗi "track" trong list "self.tracker.tracks" đại diện cho 1 object trong frame
+            # mỗi "track" sẽ có những attribute:
+            # - bbox: toạ độ để dùng cv2 vẽ bounding boxes cho object (format kiểu pixel của OpenCV); có type = numpy.ndarray..
+            # len = 4; ví dụ về VALUE = [230.27, 230.15, 341.35, 454.13]
+            # - class_name: tên của object hiện tại (ví dụ: "person"); có type = string;
+            # - color: mã màu cho object(value ví dụ: [82.0, 84.0, 163.0]); có type = list
             for track in self.tracker.tracks:  # update new findings AKA tracks
                 if not track.is_confirmed() or track.time_since_update > 1:
                     continue
+
+                """Start Code of Phat"""
+                bbox_phat = track.to_tlwh()
+                """End Code of Phat"""
+
                 bbox = track.to_tlbr()
                 class_name = track.get_class()
 
@@ -235,6 +258,7 @@ class YOLOv7_DeepSORT:
                               -1)
                 cv2.putText(frame, class_name + " : " + str(track.track_id), (int(bbox[0]), int(bbox[1] - 11)), 0, 0.6,
                             (255, 255, 255), 1, lineType=cv2.LINE_AA)
+
 
                 if verbose == 2:
                     print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(

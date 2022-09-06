@@ -34,6 +34,9 @@ class TrackState:
 
     """
 
+    # Những object được theo dõi mới được khởi tạo sẽ được đưa vào nhóm "tentative(dự kiến)" cho đến khi thu thập đủ chứng cứ.
+    # khi đã thu thập đủ chứng cứ sẽ được đưa vào nhóm "confirmed".
+    # nếu vượt quá khung frame quy định. object được theo dõi sẽ được đưa vào nhóm "deleted"
     Tentative = 1
     Confirmed = 2
     Deleted = 3
