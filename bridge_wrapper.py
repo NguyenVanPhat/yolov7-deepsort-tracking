@@ -224,12 +224,13 @@ class YOLOv7_DeepSORT:
             # Update bouding boxes của các object cho Kalman
             self.tracker.update(detections)  # updtate using Kalman Gain
 
-            # "self.tracker.tracks" là một attribute của mỗi Class Tracker (đại diện cho mỗi object) có dạng list..
+            # "self.tracker.tracks" là một attribute của Class "Tracker" trong file ./deepSort/tracker.py có dạng list..
             # ban đầu "self.tracker.tracks" là list rỗng nhưng nhờ 2 lệnh:
             # - "self.tracker.predict()"
             # - "self.tracker.update(detections)"
             # đã giúp đưa những object được detect bởi Yolo đi qua qua và được duyệt bởi bộ lọc Kalman vào danh sách theo dõi (tracks).
-            # --> Do đó, hiện tại "self.tracker.tracks" là list; len = n; mỗi phần tử trong list là 1 Class "Track" đại diện cho 1 object.
+            # --> Do đó, hiện tại "self.tracker.tracks" là list; len = n; mỗi phần tử trong list là 1 Class "Track" trong..
+            # file ./deepSort/track.py đại diện cho 1 object.
             """
             # Lưu ý: 2 frame đầu tiên sẽ được làm dữ liệu cho bộ lọc Kalman. Đến frame thứ 3 trở đi, Kalman mới có thể đưa ra dự đoán
             # Vì thế "self.tracker.tracks" trong 2 frame đầu tiên là rỗng
