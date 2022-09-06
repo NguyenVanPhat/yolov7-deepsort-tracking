@@ -265,7 +265,7 @@ class YOLOv7_DeepSORT:
                 center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
                 """End Code of Phat"""
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
-                print("\n len(center_bbox_last): ", len(center_bbox_last))
+                # print("\n len(center_bbox_last): ", len(center_bbox_last))
                 if len(center_bbox_last):
                     cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
