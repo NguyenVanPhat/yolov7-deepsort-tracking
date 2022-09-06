@@ -257,7 +257,7 @@ class YOLOv7_DeepSORT:
                             (255, 255, 255), 1, lineType=cv2.LINE_AA)
 
                 """Start Code of Phat"""
-                center_bbox_last = []
+                # center_bbox_last = []
                 center_bbox = []
                 bbox_phat = track.to_tlwh()
                 center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
