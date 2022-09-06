@@ -128,6 +128,7 @@ class YOLOv7_DeepSORT:
                 print('Video has ended or failed!')
                 break
             frame_num += 1
+            # haha
             print("\n FRAME = ", frame_num)
             # nếu "skip_frames" có giá trị, thì khi Frame chạy đến vị trí "skip_frames" quy định sẽ chạy..
             # lệnh "continue" khi đó sẽ bỏ qua khối xử lý bên dưới và quay lại loop while bên trên cho..
