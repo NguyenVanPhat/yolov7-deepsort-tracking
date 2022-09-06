@@ -243,14 +243,6 @@ class YOLOv7_DeepSORT:
                 if not track.is_confirmed() or track.time_since_update > 1:
                     continue
 
-                """Start Code of Phat"""
-                center_bbox = []
-                bbox_phat = track.to_tlwh()
-                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
-                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
-                np.array(center_bbox)
-                """End Code of Phat"""
-
                 bbox = track.to_tlbr()
                 class_name = track.get_class()
 
@@ -262,6 +254,15 @@ class YOLOv7_DeepSORT:
                               -1)
                 cv2.putText(frame, class_name + " : " + str(track.track_id), (int(bbox[0]), int(bbox[1] - 11)), 0, 0.6,
                             (255, 255, 255), 1, lineType=cv2.LINE_AA)
+
+                """Start Code of Phat"""
+                center_bbox = []
+                bbox_phat = track.to_tlwh()
+                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                center_bbox = np.array(center_bbox)
+                """End Code of Phat"""
+                
 
 
                 if verbose == 2:
