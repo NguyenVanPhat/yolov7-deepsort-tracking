@@ -72,12 +72,21 @@ class Tracker:
 
     def predict(self):
         """Propagate track state distributions one time step forward.
-
         This function should be called once every time step, before `update`.
         """
+        """
+        vì mỗi "track" trong list "self.tracks" là một Class "Track" trong ./deep_sort/track.py đại diện cho mỗi object..
+        nên gọi "track.predict()" là gọi hàm "predict()" trong  Class "Track"..
+        Vào Class "Track" đê biết chi tiết cách "track.predict()" hoạt động với "self.kf" được truyền vào. 
+        
+        --> Tóm tắt ngắn gọn tác dụng của "track.predict()" đối với mỗi Class "Track" hay mỗi object:
+        - sử dụng KalmanFilter được truyền vào để predict trước những attribute của mỗi object trong frame.
+        """
+
         # "self.tracks" có type = list; len = n; value = [<deep_sort.track.Track>, <deep_sort.track.Track>...]..
         # mỗi phần tử trong "self.tracks" đại diện cho 1 object trong frame này. Nếu frame ko phát hiện thấy object nào..
         # thì "self.tracks" là list rỗng
+        # "self.kf" là KalmanFilter đã được khai báo bên trên được truyền vào "track.predict()" để sử dụng
         for track in self.tracks:
             track.predict(self.kf)
 
@@ -87,10 +96,11 @@ class Tracker:
         Parameters
         ----------
         detections : List[deep_sort.detection.Detection]
-            A list of detections at the current time step.
+            A list of detections at the current time step (current frame).
 
         """
         # Run matching cascade.
+        # "matches" - type = list; len = 6;
         matches, unmatched_tracks, unmatched_detections = \
             self._match(detections)
 

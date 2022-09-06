@@ -40,6 +40,8 @@ class TrackState:
 
 
 class Track:
+    # Mỗi "class Track" này đại diện cho 1 object được detect trong 1 frame
+
     """
     A single target track with state space `(x, y, a, h)` and associated
     velocities, where `(x, y)` is the center of the bounding box, `a` is the
@@ -63,7 +65,9 @@ class Track:
     feature : Optional[ndarray]
         Feature vector of the detection this track originates from. If not None,
         this feature is added to the `features` cache.
-
+    """
+    # Mỗi "class Track" hay mỗi object sẽ có các attribute cơ bản như bên dưới:
+    """
     Attributes
     ----------
     mean : ndarray
@@ -146,6 +150,7 @@ class Track:
             The Kalman filter.
 
         """
+        # sử dụng KalmanFilter được truyền vào để predict trước những attribute của mỗi object như: mean, covariance, age.
         self.mean, self.covariance = kf.predict(self.mean, self.covariance)
         self.age += 1
         self.time_since_update += 1

@@ -128,7 +128,7 @@ class YOLOv7_DeepSORT:
                 print('Video has ended or failed!')
                 break
             frame_num += 1
-
+            print("\n FRAME = ", frame_num)
             # nếu "skip_frames" có giá trị, thì khi Frame chạy đến vị trí "skip_frames" quy định sẽ chạy..
             # lệnh "continue" khi đó sẽ bỏ qua khối xử lý bên dưới và quay lại loop while bên trên cho..
             # đến hết video, đồng nghĩa video đầu ra sẽ ko có các frame từ "skip_frames" trở đi.
@@ -214,7 +214,10 @@ class YOLOv7_DeepSORT:
             # "detections" có type = list; len = 6; chứa 6 phần tử là class 'deep_sort.detection.Detection'
             detections = [detections[i] for i in indices]
 
+            # Gọi Hàm predict() của Class "Tracker" trong file ./deepsort/tracker.py; vô tracker.py để biết chi tiết
+            # Bước gọi hàm "predict()" sử dụng KalmanFilter để dự đoán trước các attribute của mỗi object được detect trong frame
             self.tracker.predict()  # Call the tracker
+            # Update bouding boxes của các object cho Kalman
             self.tracker.update(detections)  # updtate using Kalman Gain
 
             for track in self.tracker.tracks:  # update new findings AKA tracks
