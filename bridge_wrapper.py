@@ -244,7 +244,11 @@ class YOLOv7_DeepSORT:
                     continue
 
                 """Start Code of Phat"""
+                center_bbox = []
                 bbox_phat = track.to_tlwh()
+                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                np.array(center_bbox)
                 """End Code of Phat"""
 
                 bbox = track.to_tlbr()
