@@ -262,7 +262,7 @@ class YOLOv7_DeepSORT:
                 center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
                 center_bbox = np.array(center_bbox)
                 """End Code of Phat"""
-                
+                cv2.cirle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
 
 
                 if verbose == 2:
