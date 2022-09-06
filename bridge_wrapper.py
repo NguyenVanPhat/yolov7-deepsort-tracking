@@ -202,11 +202,16 @@ class YOLOv7_DeepSORT:
             # "colors" có type = list; len = 20; mỗi phần tử trong list này là 1 tuple..
             # có value ví dụ như = (0.22, 0.23, 0.47) đại diện cho mã màu cho object
             colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
-
+            # "boxs" có type = numpy.ndarray; shape = (6, 4); có định dạng Bounding box (top left x, top left y, width, height)
             boxs = np.array([d.tlwh for d in detections])  # run non-maxima supression below
+            # "scores" có type = numpy.ndarray; len = n; value = [0.92801, 0.92623, 0.91129, 0.89674, 0.89323, 0.85231]
             scores = np.array([d.confidence for d in detections])
+            # "classes" có type = numpy.ndarray; len = n; value = ['person' 'person'...]
             classes = np.array([d.class_name for d in detections])
+            # "nms_max_overlap" có type = float; value = 1.0. là --Maximum NMs allowed for the tracker--
+            # "indices" có type = list; len = 6; value = [0, 1, 2, 3, 4, 5]
             indices = preprocessing.non_max_suppression(boxs, classes, self.nms_max_overlap, scores)
+            # "detections" có type = list; len = 6; chứa 6 phần tử là class 'deep_sort.detection.Detection'
             detections = [detections[i] for i in indices]
 
             self.tracker.predict()  # Call the tracker
