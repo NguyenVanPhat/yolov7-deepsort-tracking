@@ -256,13 +256,18 @@ class YOLOv7_DeepSORT:
                             (255, 255, 255), 1, lineType=cv2.LINE_AA)
 
                 """Start Code of Phat"""
+                center_bbox_last = []
                 center_bbox = []
                 bbox_phat = track.to_tlwh()
                 center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
                 center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
-                center_bbox = np.array(center_bbox)
                 """End Code of Phat"""
-                cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
+                # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
+                if len(center_bbox_last):
+                    cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
+
+                center_bbox_last.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                center_bbox_last.append(bbox_phat[1] + (bbox_phat[3] / 2))
 
 
                 if verbose == 2:
