@@ -186,14 +186,21 @@ class YOLOv7_DeepSORT:
             # ---------------------------------- DeepSORT tracker work starts here ------------------------------------------------------------
             # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
             # "bboxes" có type = numpy.ndarray; shape = (6, 4);
-            # "features" có type = numpy.ndarray; shape = (6, 128);
+            # "features" có type = numpy.ndarray; shape = (6, 128); là một vectơ đặc trưng mô tả đối tượng có trong frame này.
             features = self.encoder(frame,
                                     bboxes)  # encode detections and feed to tracker. [No of BB / detections per frame, embed_size]
+            # "detections" có type = list; len = n; mỗi phần tử trong list "detections" là 1 bounding boxes đại diện cho 1 object..
+            # được detect trong frame này.
+            # Mỗi phần tử trong list "detections" có type = <class 'deep_sort.detection.Detection'>
             detections = [Detection(bbox, score, class_name, feature) for bbox, score, class_name, feature in
                           zip(bboxes, scores, names,
                               features)]  # [No of BB per frame] deep_sort.detection.Detection object
 
+            # "cmap" có type = <class 'matplotlib.colors.ListedColormap'>;
             cmap = plt.get_cmap('tab20b')  # initialize color map
+            # "np.linspace(0, 1, 20)" tạo ra 1 numpy.ndarray có len = 20
+            # "colors" có type = list; len = 20; mỗi phần tử trong list này là 1 tuple..
+            # có value ví dụ như = (0.22, 0.23, 0.47) đại diện cho mã màu cho object
             colors = [cmap(i)[:3] for i in np.linspace(0, 1, 20)]
 
             boxs = np.array([d.tlwh for d in detections])  # run non-maxima supression below
