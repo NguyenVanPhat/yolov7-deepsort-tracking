@@ -282,7 +282,8 @@ class YOLOv7_DeepSORT:
                     print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(
                         str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
             """Start Code of Phat"""
-            center_bbox_last_frame.append(center_bbox_last_sub)
+            if len(center_bbox_last_sub): 
+                center_bbox_last_frame.append(center_bbox_last_sub)
             """End Code of Phat"""
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
             if verbose >= 1:
