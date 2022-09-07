@@ -120,6 +120,7 @@ class YOLOv7_DeepSORT:
         # "frame_num" dùng để đếm số frame hiện tại trong video
         frame_num = 0
         center_bbox_last_frame = []
+        number_frame_throughout = 3
         # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
         while True:  # while video is running
             # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
@@ -265,17 +266,13 @@ class YOLOv7_DeepSORT:
                 center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
                 center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
 
-                # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
-                # print("\n len(center_bbox_last): ", len(center_bbox_last))
-                if len(center_bbox_last_frame):
-                    list_object_in_last_frame = center_bbox_last_frame[-1]
-                    for i in list_object_in_last_frame:
-                        if i[0] == track.track_id:
-                            cv2.line(frame, (int(i[1]), int(i[2])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
-
                 center_bbox_last_sub1.append(track.track_id)
                 center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
                 center_bbox_last_sub1.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                center_bbox_last_sub1.append(color)
+
+                # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
+                # print("\n len(center_bbox_last): ", len(center_bbox_last))
 
                 center_bbox_last_sub.append(center_bbox_last_sub1)
                 """End Code of Phat"""
@@ -288,7 +285,28 @@ class YOLOv7_DeepSORT:
             """Start Code of Phat"""
             if len(center_bbox_last_sub):
                 center_bbox_last_frame.append(center_bbox_last_sub)
+
+            if len(center_bbox_last_frame) >= number_frame_throughout: # number_frame_throughout = 3
+                for i in range(1, number_frame_throughout):  # range() = 2 -> [1, 2, 3]
+                    list_object_in_frame_current = center_bbox_last_frame[-i]
+                    list_object_in_frame_past = center_bbox_last_frame[-i+1]
+                    # Vẽ Line giữa frame hiện tại và frame quá khứ
+                    for object_current in list_object_in_frame_current:
+                        for object_past in list_object_in_frame_past:
+                            if object_current[0] == object_past[0]:
+                                cv2.line(frame, (int(object_past[1]), int(object_past[2])), (int(object_current[1]), int(object_current[2])), object_current[3], 7)
+                    # Xoá những phần tử của "list_object_in_frame_past" ko có mặt trong "list_object_in_frame_current"
+                    for object_past in list_object_in_frame_past:
+                        co_trong_list_current = False
+                        # loop kiểm tra xem "object_past" có trong "list_object_in_frame_current" hay ko
+                        for object_current in list_object_in_frame_current:
+                            if object_past[0] == object_current[0]:
+                                co_trong_list_current = True
+                        if not co_trong_list_current:
+                            print("\nĐã xoá ", object_past)
+                            center_bbox_last_frame[-i+1].remove(object_past)
             """End Code of Phat"""
+
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
             if verbose >= 1:
                 fps = 1.0 / (time.time() - start_time)  # calculate frames per second of running detections
