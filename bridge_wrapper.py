@@ -271,12 +271,11 @@ class YOLOv7_DeepSORT:
                 center_bbox_last_sub1.append(bbox_phat[1] + (bbox_phat[3] / 2))
                 center_bbox_last_sub1.append(color)
 
+                center_bbox_last_sub.append(center_bbox_last_sub1)
+
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
-
-                center_bbox_last_sub.append(center_bbox_last_sub1)
                 """End Code of Phat"""
-
 
                 if verbose == 2:
                     print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(
@@ -287,7 +286,7 @@ class YOLOv7_DeepSORT:
                 center_bbox_last_frame.append(center_bbox_last_sub)
 
             if len(center_bbox_last_frame) >= number_frame_throughout: # number_frame_throughout = 3
-                for i in range(1, number_frame_throughout):  # range() = 2 -> [1, 2, 3]
+                for i in range(1, 3):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
                     list_object_in_frame_past = center_bbox_last_frame[-i+1]
                     # Vẽ Line giữa frame hiện tại và frame quá khứ
