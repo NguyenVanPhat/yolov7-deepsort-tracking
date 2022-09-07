@@ -261,11 +261,11 @@ class YOLOv7_DeepSORT:
 
                 """Start Code of Phat"""
                 # center_bbox_last = []
-                # center_bbox = []
+                center_bbox = []
                 center_bbox_last_sub1 = []
                 bbox_phat = track.to_tlwh()
-                # center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
-                # center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
 
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
