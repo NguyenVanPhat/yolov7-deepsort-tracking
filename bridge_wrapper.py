@@ -285,28 +285,29 @@ class YOLOv7_DeepSORT:
             if len(center_bbox_last_sub):
                 center_bbox_last_frame.append(center_bbox_last_sub)
                 if len(center_bbox_last_frame) > number_frame_throughout:
+                    center_bbox_last_frame.pop(0)
 
 
-            if len(center_bbox_last_frame) >= number_frame_throughout: # number_frame_throughout = 3
+            if len(center_bbox_last_frame) == number_frame_throughout: # number_frame_throughout = 3
                 for i in range(1, 3):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
                     list_object_in_frame_past = center_bbox_last_frame[-i+1]
                     # Vẽ Line giữa frame hiện tại và frame quá khứ
-                    for object_current in list_object_in_frame_current:
-                        for object_past in list_object_in_frame_past:
+                    for object_past in list_object_in_frame_past:
+                        for object_current in list_object_in_frame_current:
                             if object_current[0] == object_past[0]:
                                 cv2.line(frame, (int(object_past[1]), int(object_past[2])), (int(object_current[1]), int(object_current[2])), object_current[3], 7)
                     # Xoá những phần tử của "list_object_in_frame_past" ko có mặt trong "list_object_in_frame_current"
-                    for object_past in list_object_in_frame_past:
-                        co_trong_list_current = False
-                        # loop kiểm tra xem "object_past" có trong "list_object_in_frame_current" hay ko
-                        for object_current in list_object_in_frame_current:
-                            if object_past[0] == object_current[0]:
-                                co_trong_list_current = True
-                        if not co_trong_list_current:
-                            print("\nĐã xoá phần tử index 0", object_past)
-                            # center_bbox_last_frame[-i+1].remove(object_past)
-                            center_bbox_last_frame[-i + 1].pop(0)
+                    # for object_past in list_object_in_frame_past:
+                    #     co_trong_list_current = False
+                    #     # loop kiểm tra xem "object_past" có trong "list_object_in_frame_current" hay ko
+                    #     for object_current in list_object_in_frame_current:
+                    #         if object_past[0] == object_current[0]:
+                    #             co_trong_list_current = True
+                    #     if not co_trong_list_current:
+                    #         print("\nĐã xoá phần tử index 0", object_past)
+                    #         # center_bbox_last_frame[-i+1].remove(object_past)
+                    #         center_bbox_last_frame[-i + 1].pop(0)
             """End Code of Phat"""
 
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
