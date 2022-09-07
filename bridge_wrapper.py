@@ -119,8 +119,8 @@ class YOLOv7_DeepSORT:
 
         # "frame_num" dùng để đếm số frame hiện tại trong video
         frame_num = 0
+        center_bbox_last_frame = []
         # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
-        center_bbox_last = []
         while True:  # while video is running
             # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
             return_value, frame = vid.read()
@@ -223,7 +223,7 @@ class YOLOv7_DeepSORT:
             self.tracker.predict()  # Call the tracker
             # Update bouding boxes của các object cho Kalman
             self.tracker.update(detections)  # updtate using Kalman Gain
-
+            center_bbox_last_sub = []
             # "self.tracker.tracks" là một attribute của Class "Tracker" trong file ./deepSort/tracker.py có dạng list..
             # ban đầu "self.tracker.tracks" là list rỗng nhưng nhờ 2 lệnh:
             # - "self.tracker.predict()"
@@ -244,7 +244,7 @@ class YOLOv7_DeepSORT:
             for track in self.tracker.tracks:  # update new findings AKA tracks
                 if not track.is_confirmed() or track.time_since_update > 1:
                     continue
-
+                # pprint("track.track_id", track.track_id)
                 bbox = track.to_tlbr()
                 class_name = track.get_class()
 
@@ -259,24 +259,30 @@ class YOLOv7_DeepSORT:
 
                 """Start Code of Phat"""
                 # center_bbox_last = []
-                center_bbox = []
+                # center_bbox = []
+                center_bbox_last_sub1 = []
                 bbox_phat = track.to_tlwh()
-                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
-                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
-                """End Code of Phat"""
+                # center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                # center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
+
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
                 if len(center_bbox_last):
                     cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
-                center_bbox_last.append(bbox_phat[0] + (bbox_phat[2] / 2))
-                center_bbox_last.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                center_bbox_last_sub1.append(track.track_id)
+                center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
+                center_bbox_last_sub1.append(bbox_phat[1] + (bbox_phat[3] / 2))
+
+                center_bbox_last_sub.append(center_bbox_last_sub1)
+                """End Code of Phat"""
 
 
                 if verbose == 2:
                     print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(
                         str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
 
+            center_bbox_last_frame.append(center_bbox_last_sub)
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
             if verbose >= 1:
                 fps = 1.0 / (time.time() - start_time)  # calculate frames per second of running detections
