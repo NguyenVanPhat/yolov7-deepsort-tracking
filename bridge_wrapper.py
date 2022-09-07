@@ -284,6 +284,8 @@ class YOLOv7_DeepSORT:
             """Start Code of Phat"""
             if len(center_bbox_last_sub):
                 center_bbox_last_frame.append(center_bbox_last_sub)
+                if len(center_bbox_last_frame) > number_frame_throughout:
+
 
             if len(center_bbox_last_frame) >= number_frame_throughout: # number_frame_throughout = 3
                 for i in range(1, 3):  # range() = 2 -> [1, 2, 3]
@@ -302,8 +304,9 @@ class YOLOv7_DeepSORT:
                             if object_past[0] == object_current[0]:
                                 co_trong_list_current = True
                         if not co_trong_list_current:
-                            print("\nĐã xoá ", object_past)
-                            center_bbox_last_frame[-i+1].remove(object_past)
+                            print("\nĐã xoá phần tử index 0", object_past)
+                            # center_bbox_last_frame[-i+1].remove(object_past)
+                            center_bbox_last_frame[-i + 1].pop(0)
             """End Code of Phat"""
 
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
