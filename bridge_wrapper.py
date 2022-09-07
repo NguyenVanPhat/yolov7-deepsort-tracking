@@ -267,8 +267,11 @@ class YOLOv7_DeepSORT:
 
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
-                # if len(center_bbox_last):
-                #     cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
+                if len(center_bbox_last_sub):
+                    list_object_in_last_frame = center_bbox_last_frame[-1]
+                    search_trackID = [i[0] == track.track_id for i in list_object_in_last_frame]
+                    pprint("search_trackID", search_trackID)
+                    # cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
                 center_bbox_last_sub1.append(track.track_id)
                 center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
@@ -281,8 +284,9 @@ class YOLOv7_DeepSORT:
                 if verbose == 2:
                     print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(
                         str(track.track_id), class_name, (int(bbox[0]), int(bbox[1]), int(bbox[2]), int(bbox[3]))))
+
             """Start Code of Phat"""
-            if len(center_bbox_last_sub): 
+            if len(center_bbox_last_sub):
                 center_bbox_last_frame.append(center_bbox_last_sub)
             """End Code of Phat"""
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------

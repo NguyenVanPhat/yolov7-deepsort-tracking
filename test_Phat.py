@@ -1,3 +1,4 @@
-center_bbox_last = []
-if 1:
-    print(len(center_bbox_last))
+my_dict = {}
+print(type(my_dict))
+my_dict["1"] = "haha"
+print(my_dict)
