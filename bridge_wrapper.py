@@ -240,9 +240,7 @@ class YOLOv7_DeepSORT:
             # - bbox: toạ độ để dùng cv2 vẽ bounding boxes cho object (format kiểu pixel của OpenCV); có type = numpy.ndarray..
             # len = 4; ví dụ về VALUE = [230.27, 230.15, 341.35, 454.13]
             # - class_name: tên của object hiện tại (ví dụ: "person"); có type = string;
-            # - color: mã màu cho object(value ví dụ: [82.0, 84.0, 163.0]); có type = list
-            pprint("Last Frame object tracker", center_bbox_last_frame[-1])
-            pprint("current Frame object tracker", self.tracker.tracks)
+            # - color: mã màu cho object(value ví dụ: [82.0, 84.0, 163.0]); có type = list                        
             for track in self.tracker.tracks:  # update new findings AKA tracks
                 if not track.is_confirmed() or track.time_since_update > 1:
                     continue
