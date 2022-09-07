@@ -267,7 +267,7 @@ class YOLOv7_DeepSORT:
 
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
-                if len(center_bbox_last_sub):
+                if len(center_bbox_last_frame):
                     list_object_in_last_frame = center_bbox_last_frame[-1]
                     search_trackID = [i[0] == track.track_id for i in list_object_in_last_frame]
                     pprint("search_trackID", search_trackID)
