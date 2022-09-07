@@ -269,15 +269,11 @@ class YOLOv7_DeepSORT:
 
                 # cv2.circle(frame, (int(center_bbox[0]), int(center_bbox[1])), 5, color, -1)
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
-                if len(center_bbox_last_frame):
-                    list_object_in_last_frame = center_bbox_last_frame[-1]
-                    for i in list_object_in_last_frame:
-                        if i[0] == track.track_id:
-                            cv2.line(frame, (int(i[1]), int(i[2])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
                 center_bbox_last_sub1.append(track.track_id)
                 center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
                 center_bbox_last_sub1.append(bbox_phat[1] + (bbox_phat[3] / 2))
+                center_bbox_last_sub1.append(color)
 
                 center_bbox_last_sub.append(center_bbox_last_sub1)
                 """End Code of Phat"""
@@ -290,6 +286,15 @@ class YOLOv7_DeepSORT:
             """Start Code of Phat"""
             if len(center_bbox_last_sub):
                 center_bbox_last_frame.append(center_bbox_last_sub)
+
+            if len(center_bbox_last_frame) == 2:
+                list_object_in_last_frame1 = center_bbox_last_frame[-1]
+                list_object_in_last_frame2 = center_bbox_last_frame[-2]
+                for i in list_object_in_last_frame1:
+                    for j in list_object_in_last_frame2:
+                        if i[0] == j[0]:
+                            # cv2.line(frame, (int(i[1]), int(i[2])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
+                            cv2.line(frame, (int(j[1]), int(j[2])), (int(i[1]), int(i[2])), i[3], 7)
             """End Code of Phat"""
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
             if verbose >= 1:
