@@ -241,6 +241,8 @@ class YOLOv7_DeepSORT:
             # len = 4; ví dụ về VALUE = [230.27, 230.15, 341.35, 454.13]
             # - class_name: tên của object hiện tại (ví dụ: "person"); có type = string;
             # - color: mã màu cho object(value ví dụ: [82.0, 84.0, 163.0]); có type = list
+            pprint("Last Frame object tracker", center_bbox_last_frame[-1])
+            pprint("current Frame object tracker", self.tracker.tracks)
             for track in self.tracker.tracks:  # update new findings AKA tracks
                 if not track.is_confirmed() or track.time_since_update > 1:
                     continue
@@ -269,9 +271,9 @@ class YOLOv7_DeepSORT:
                 # print("\n len(center_bbox_last): ", len(center_bbox_last))
                 if len(center_bbox_last_frame):
                     list_object_in_last_frame = center_bbox_last_frame[-1]
-                    search_trackID = [i[0] == track.track_id for i in list_object_in_last_frame]
-                    pprint("search_trackID", search_trackID)
-                    # cv2.line(frame, (int(center_bbox_last[0]), int(center_bbox_last[1])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
+                    for i in list_object_in_last_frame:
+                        if i[0] == track.track_id:
+                            cv2.line(frame, (int(i[1]), int(i[2])), (int(center_bbox[0]), int(center_bbox[1])), color, 7)
 
                 center_bbox_last_sub1.append(track.track_id)
                 center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
