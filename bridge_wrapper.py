@@ -140,7 +140,7 @@ class YOLOv7_DeepSORT:
         # 55 fps -> 17 frame
         # 60 fps -> 19 frame
         origin_fps = 20
-        origin_frame_throughout = 4
+        origin_frame_throughout = 3
         stride_fps = 5
         stride_frame_throughout = 2
         if int(fps_video_src) < 20:
@@ -289,17 +289,15 @@ class YOLOv7_DeepSORT:
                             (255, 255, 255), 1, lineType=cv2.LINE_AA)
 
                 """Start Code of Phat"""
-                # center_bbox_last = []
-                center_bbox = []
                 center_bbox_last_sub1 = []
                 bbox_phat = track.to_tlwh()
-                center_bbox.append(bbox_phat[0] + (bbox_phat[2] / 2))
-                center_bbox.append(bbox_phat[1] + (bbox_phat[3] / 2))
 
                 center_bbox_last_sub1.append(track.track_id)
                 center_bbox_last_sub1.append(bbox_phat[0] + (bbox_phat[2] / 2))
                 center_bbox_last_sub1.append(bbox_phat[1] + (bbox_phat[3] / 2))
                 center_bbox_last_sub1.append(color)
+                center_bbox_last_sub1.append(bbox_phat[2])
+                center_bbox_last_sub1.append(bbox_phat[3])
 
                 center_bbox_last_sub.append(center_bbox_last_sub1)
 
@@ -326,7 +324,7 @@ class YOLOv7_DeepSORT:
                     for object_past in list_object_in_frame_past:
                         for object_current in list_object_in_frame_current:
                             if object_current[0] == object_past[0]:
-                                cv2.line(frame, (int(object_past[1]), int(object_past[2])), (int(object_current[1]), int(object_current[2])), object_current[3], 7)
+                                cv2.line(frame, (int(object_past[1]), int(object_past[2])), (int(object_current[1]), int(object_current[2])), object_current[3], ((object_current[4] + object_current[5])/47))
                     # Xoá những phần tử của "list_object_in_frame_past" ko có mặt trong "list_object_in_frame_current"
                     # for object_past in list_object_in_frame_past:
                     #     co_trong_list_current = False
