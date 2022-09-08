@@ -128,7 +128,7 @@ class YOLOv7_DeepSORT:
         frame_num = 0
 
         """Start Code of Phat"""
-        # center_bbox_last_frame = []
+        center_bbox_last_frame = []
         # # <20 fps -> 2 frame
         # # 20 fps -> 3 frame
         # # 25 fps -> 5 frame
