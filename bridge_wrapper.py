@@ -317,6 +317,7 @@ class YOLOv7_DeepSORT:
 
 
             if len(center_bbox_last_frame) == number_frame_throughout: # number_frame_throughout = 3
+                dem = 0
                 for i in range(1, len(center_bbox_last_frame)):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
                     list_object_in_frame_past = center_bbox_last_frame[-i+1]
@@ -324,10 +325,11 @@ class YOLOv7_DeepSORT:
                     for object_past in list_object_in_frame_past:
                         for object_current in list_object_in_frame_current:
                             if object_current[0] == object_past[0]:
-                                thickness_line = round((((object_current[4] + object_current[5])/47)+1)/i)
+                                thickness_line = round((((object_current[4] + object_current[5])/47)+1)-dem)
                                 # Tránh thickness_line bằng 0 để ko lỗi
                                 if thickness_line == 0: thickness_line = 1
                                 cv2.line(frame, (int(object_past[1]), int(object_past[2])), (int(object_current[1]), int(object_current[2])), object_current[3], thickness_line)
+                    dem += 0.5
                     # Xoá những phần tử của "list_object_in_frame_past" ko có mặt trong "list_object_in_frame_current"
                     # for object_past in list_object_in_frame_past:
                     #     co_trong_list_current = False
