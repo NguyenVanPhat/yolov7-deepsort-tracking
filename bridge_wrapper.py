@@ -319,7 +319,7 @@ class YOLOv7_DeepSORT:
 
             if len(center_bbox_last_frame) == number_frame_throughout: # number_frame_throughout = 3
                 dem = 0
-                for i in range(1, len(center_bbox_last_frame)):  # range() = 2 -> [1, 2, 3]
+                for i in range(1, len(center_bbox_last_frame), 2):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
                     list_object_in_frame_past = center_bbox_last_frame[-i+1]
                     # Vẽ Line giữa frame hiện tại và frame quá khứ
