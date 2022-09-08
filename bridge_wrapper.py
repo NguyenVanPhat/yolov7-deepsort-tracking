@@ -140,7 +140,7 @@ class YOLOv7_DeepSORT:
         # 55 fps -> 17 frame
         # 60 fps -> 19 frame
         origin_fps = 20
-        origin_frame_throughout = 3
+        origin_frame_throughout = 4
         stride_fps = 5
         stride_frame_throughout = 2
         if int(fps_video_src) < 20:
@@ -319,7 +319,7 @@ class YOLOv7_DeepSORT:
 
 
             if len(center_bbox_last_frame) == number_frame_throughout: # number_frame_throughout = 3
-                for i in range(1, 3):  # range() = 2 -> [1, 2, 3]
+                for i in range(1, len(center_bbox_last_frame)):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
                     list_object_in_frame_past = center_bbox_last_frame[-i+1]
                     # Vẽ Line giữa frame hiện tại và frame quá khứ
