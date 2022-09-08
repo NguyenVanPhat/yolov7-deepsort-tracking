@@ -89,7 +89,7 @@ class YOLOv7_DeepSORT:
         self.tracker = Tracker(metric)  # initialize tracker
 
     def track_video(self, video: str, output: str, skip_frames: int = 0, show_live: bool = False,
-                    count_objects: bool = False, verbose: int = 0, origin_frame_throughout: int = 10, stride_frame_throughout: int = 3, number_frame_throughout: int = 3):
+                    count_objects: bool = False, verbose: int = 0, origin_frame_throughout: int = 10, stride_frame_throughout: int = 3):
         '''
         Track any given webcam or video
         args: 
@@ -129,26 +129,26 @@ class YOLOv7_DeepSORT:
 
         """Start Code of Phat"""
         center_bbox_last_frame = []
-        # # <20 fps -> 2 frame
-        # # 20 fps -> 3 frame
-        # # 25 fps -> 5 frame
-        # # 30 fps -> 7 frame
-        # # 35 fps -> 9 frame
-        # # 40 fps -> 11 frame
-        # # 45 fps -> 13 frame
-        # # 50 fps -> 15 frame
-        # # 55 fps -> 17 frame
-        # # 60 fps -> 19 frame
-        # origin_fps = 20
-        # # origin_frame_throughout = 6
-        # stride_fps = 5
-        # # stride_frame_throughout = 2
-        # if int(fps_video_src) < 20:
-        #     number_frame_throughout = 2
-        # elif int(fps_video_src) == origin_fps:
-        #     number_frame_throughout = int(origin_frame_throughout)
-        # else:
-        #     number_frame_throughout = int(origin_frame_throughout + (stride_frame_throughout*((int(fps_video_src)-origin_fps)/stride_fps)))
+        # <20 fps -> 2 frame
+        # 20 fps -> 3 frame
+        # 25 fps -> 5 frame
+        # 30 fps -> 7 frame
+        # 35 fps -> 9 frame
+        # 40 fps -> 11 frame
+        # 45 fps -> 13 frame
+        # 50 fps -> 15 frame
+        # 55 fps -> 17 frame
+        # 60 fps -> 19 frame
+        origin_fps = 20
+        # origin_frame_throughout = 6
+        stride_fps = 5
+        # stride_frame_throughout = 2
+        if int(fps_video_src) < 20:
+            number_frame_throughout = 2
+        elif int(fps_video_src) == origin_fps:
+            number_frame_throughout = int(origin_frame_throughout)
+        else:
+            number_frame_throughout = int(origin_frame_throughout + (stride_frame_throughout*((int(fps_video_src)-origin_fps)/stride_fps)))
 
         """End Code of Phat"""
 
@@ -321,7 +321,7 @@ class YOLOv7_DeepSORT:
                 dem = 0
                 for i in range(1, len(center_bbox_last_frame)):  # range() = 2 -> [1, 2, 3]
                     list_object_in_frame_current = center_bbox_last_frame[-i]
-                    list_object_in_frame_past = center_bbox_last_frame[-i+1]
+                    list_object_in_frame_past = center_bbox_last_frame[-(i+1)]
                     # Vẽ Line giữa frame hiện tại và frame quá khứ
                     for object_past in list_object_in_frame_past:
                         for object_current in list_object_in_frame_current:
