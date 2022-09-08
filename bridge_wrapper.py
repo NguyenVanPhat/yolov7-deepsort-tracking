@@ -140,7 +140,7 @@ class YOLOv7_DeepSORT:
         # 55 fps -> 17 frame
         # 60 fps -> 19 frame
         origin_fps = 20
-        origin_frame_throughout = 4
+        origin_frame_throughout = 6
         stride_fps = 5
         stride_frame_throughout = 2
         if int(fps_video_src) < 20:
