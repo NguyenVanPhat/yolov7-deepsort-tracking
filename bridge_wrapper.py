@@ -106,6 +106,7 @@ class YOLOv7_DeepSORT:
         try:  # begin video capture
             vid = cv2.VideoCapture(int(video))
         except:
+            print("Đọc Video bằng đường dẫn")
             vid = cv2.VideoCapture(video)
 
         out = None
@@ -308,6 +309,9 @@ class YOLOv7_DeepSORT:
                     #         print("\nĐã xoá phần tử index 0", object_past)
                     #         # center_bbox_last_frame[-i+1].remove(object_past)
                     #         center_bbox_last_frame[-i + 1].pop(0)
+            import imageio
+            fps = imageio.get_reader(str(video), 'ffmpeg').get_meta_data()['fps']
+            print("\n FPS of Video Phat: ", fps)
             """End Code of Phat"""
 
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
