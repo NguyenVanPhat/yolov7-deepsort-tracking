@@ -106,8 +106,14 @@ class YOLOv7_DeepSORT:
         try:  # begin video capture
             vid = cv2.VideoCapture(int(video))
         except:
-            print("Đọc Video bằng đường dẫn")
             vid = cv2.VideoCapture(video)
+
+        """Start Code of Phat"""
+        # Get FPS of video
+        import imageio
+        fps_video_src = imageio.get_reader(str(video), 'ffmpeg').get_meta_data()['fps']
+        print("\n FPS of Video: ", fps_video_src)
+        """End Code of Phat"""
 
         out = None
         # thiết lập các thông số để lưu video vào đường dẫn đầu ra "output"
@@ -120,8 +126,31 @@ class YOLOv7_DeepSORT:
 
         # "frame_num" dùng để đếm số frame hiện tại trong video
         frame_num = 0
+
+        """Start Code of Phat"""
         center_bbox_last_frame = []
-        number_frame_throughout = 3
+        # <20 fps -> 2 frame
+        # 20 fps -> 3 frame
+        # 25 fps -> 5 frame
+        # 30 fps -> 7 frame
+        # 35 fps -> 9 frame
+        # 40 fps -> 11 frame
+        # 45 fps -> 13 frame
+        # 50 fps -> 15 frame
+        # 55 fps -> 17 frame
+        # 60 fps -> 19 frame
+        origin_fps = 20
+        origin_frame_throughout = 3
+        stride_fps = 5
+        stride_frame_throughout = 2
+        if int(fps_video_src) < 20:
+            number_frame_throughout = 2
+        elif int(fps_video_src) == origin_fps:
+            number_frame_throughout = int(origin_frame_throughout)
+        else:
+            number_frame_throughout = int(origin_frame_throughout + (stride_frame_throughout*((int(fps_video_src)-origin_fps)/stride_fps)))
+        """End Code of Phat"""
+
         # Khối xử lý chính của Chương trình - Vòng lặp chạy qua từng Frame video và xử lý từng frame đó
         while True:  # while video is running
             # "frame" có type = numpy.ndarray; shape = (1080, 1920, 3);
@@ -309,9 +338,7 @@ class YOLOv7_DeepSORT:
                     #         print("\nĐã xoá phần tử index 0", object_past)
                     #         # center_bbox_last_frame[-i+1].remove(object_past)
                     #         center_bbox_last_frame[-i + 1].pop(0)
-            import imageio
-            fps = imageio.get_reader(str(video), 'ffmpeg').get_meta_data()['fps']
-            print("\n FPS of Video Phat: ", fps)
+
             """End Code of Phat"""
 
             # -------------------------------- Tracker work ENDS here -----------------------------------------------------------------------
