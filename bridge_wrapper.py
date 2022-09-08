@@ -89,7 +89,7 @@ class YOLOv7_DeepSORT:
         self.tracker = Tracker(metric)  # initialize tracker
 
     def track_video(self, video: str, output: str, skip_frames: int = 0, show_live: bool = False,
-                    count_objects: bool = False, verbose: int = 0, origin_frame_throughout: int = 6, stride_frame_throughout: int = 2):
+                    count_objects: bool = False, verbose: int = 0, origin_frame_throughout: int = 10, stride_frame_throughout: int = 3):
         '''
         Track any given webcam or video
         args: 
