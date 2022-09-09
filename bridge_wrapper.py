@@ -216,9 +216,7 @@ class YOLOv7_DeepSORT:
             count = len(names)
 
             if count_objects:
-                # cv2.putText(frame, "Objects being tracked: {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL,
-                #             1.5, (0, 0, 0), 2)
-                cv2.putText(frame, "Số lượng đối tượng được theo dõi : {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL,
+                cv2.putText(frame, "Objects being tracked: {}".format(count), (5, 35), cv2.FONT_HERSHEY_COMPLEX_SMALL,
                             1.5, (0, 0, 0), 2)
 
             # ---------------------------------- DeepSORT tracker work starts here ------------------------------------------------------------
