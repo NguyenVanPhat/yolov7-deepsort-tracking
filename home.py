@@ -1,6 +1,6 @@
 import streamlit as st
 import wget
-# from detection_helpers import *
+from detection_helpers import *
 # from tracking_helpers import *
 # from bridge_wrapper import *
 # from PIL import Image
