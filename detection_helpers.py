@@ -152,16 +152,16 @@ class Detector:
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
             thickness_bb = np.round((im0[0] + im0[1]) / 1000)
-            st.write("thickness_bb = ", thickness_bb)
             if thickness_bb < 2:
                 thickness_bb = 2
+            print("thickness_bb = ", thickness_bb)
 
             # Write results
             for *xyxy, conf, cls in reversed(det):
                 # "plot_bb" mặc định là False, nếu để thành True sẽ khiến chương trình chạy lỗi.
                 if plot_bb:  # Add bbox to image   # save_img
                     label = f'{self.names[int(cls)]} {conf:.2f}'
-                    plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)], line_thickness=1)
+                    plot_one_box(xyxy, im0, label=label, color=self.colors[int(cls)], line_thickness=thickness_bb)
                     
             # "det.detach().cpu().numpy()" có type = numpy.ndarray; shape = (6, 6)
             return im0 if plot_bb else det.detach().cpu().numpy()
