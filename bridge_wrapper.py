@@ -282,12 +282,16 @@ class YOLOv7_DeepSORT:
 
                 color = colors[int(track.track_id) % len(colors)]  # draw bbox on screen
                 color = [i * 255 for i in color]
-                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, 2)
+                width * height
+                thickness_bb = round((width + height) / 1000)
+                if thickness_bb <2:
+                    thickness_bb = 2
+                cv2.rectangle(frame, (int(bbox[0]), int(bbox[1])), (int(bbox[2]), int(bbox[3])), color, thickness_bb)
                 cv2.rectangle(frame, (int(bbox[0]), int(bbox[1] - 30)),
                               (int(bbox[0]) + (len(class_name) + len(str(track.track_id))) * 17, int(bbox[1])), color,
                               -1)
                 cv2.putText(frame, class_name + " : " + str(track.track_id), (int(bbox[0]), int(bbox[1] - 11)), 0, 0.6,
-                            (255, 255, 255), 1, lineType=cv2.LINE_AA)
+                            (255, 255, 255), thickness_bb-1, lineType=cv2.LINE_AA)
 
                 """Start Code of Phat"""
                 center_bbox_last_sub1 = []
