@@ -152,9 +152,10 @@ class Detector:
             det[:, :4] = scale_coords(img.shape[2:], det[:, :4], im0.shape).round()
 
             thickness_bb = np.round((im0[0] + im0[1]) / 1000)
+            print("thickness_bb = ", thickness_bb)
             if thickness_bb < 2:
                 thickness_bb = 2
-            print("thickness_bb = ", thickness_bb)
+
 
             # Write results
             for *xyxy, conf, cls in reversed(det):
