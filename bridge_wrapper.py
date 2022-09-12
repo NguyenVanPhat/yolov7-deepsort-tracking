@@ -282,7 +282,7 @@ class YOLOv7_DeepSORT:
 
                 color = colors[int(track.track_id) % len(colors)]  # draw bbox on screen
                 color = [i * 255 for i in color]
-                width * height
+
                 thickness_bb = round((width + height) / 1000)
                 if thickness_bb <2:
                     thickness_bb = 2
